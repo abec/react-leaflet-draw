@@ -22,6 +22,7 @@ export default class EditControl extends LayersControl {
     onCreated: PropTypes.func,
     onMounted: PropTypes.func,
     draw: PropTypes.object,
+    edit: PropTypes.object,
     position: PropTypes.oneOf([
       'topright',
       'topleft',
@@ -87,20 +88,25 @@ export default class EditControl extends LayersControl {
 
   updateDrawControls = () => {
     const { layerContainer } = this.context;
-    const { draw, position } = this.props;
-    const options = {
-      edit: {
-        featureGroup: layerContainer
-      }
-    };
+    const { draw, edit, position } = this.props;
+    const options = {}
 
     if (draw) {
       options.draw = draw;
     }
 
+    if (edit) {
+      options.edit = edit;
+    } else {
+      options.edit = {}
+    }
+
+    options.edit.featureGroup = layerContainer
+
     if (position) {
       options.position = position;
     }
+    console.log(options)
 
     this.leafletElement = new L.Control.Draw(options); // eslint-disable-line
   };
